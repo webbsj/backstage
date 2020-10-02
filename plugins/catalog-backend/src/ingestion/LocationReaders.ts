@@ -29,15 +29,16 @@ import { AnnotateLocationEntityProcessor } from './processors/AnnotateLocationEn
 import { ApiDefinitionAtLocationProcessor } from './processors/ApiDefinitionAtLocationProcessor';
 import { AzureApiReaderProcessor } from './processors/AzureApiReaderProcessor';
 import { BitbucketApiReaderProcessor } from './processors/BitbucketApiReaderProcessor';
+import { CodeOwnersProcessor } from './processors/CodeOwnersProcessor';
 import { EntityPolicyProcessor } from './processors/EntityPolicyProcessor';
 import { FileReaderProcessor } from './processors/FileReaderProcessor';
 import { GithubOrgReaderProcessor } from './processors/GithubOrgReaderProcessor';
 import { GithubReaderProcessor } from './processors/GithubReaderProcessor';
 import { GitlabApiReaderProcessor } from './processors/GitlabApiReaderProcessor';
 import { GitlabReaderProcessor } from './processors/GitlabReaderProcessor';
+import { LdapOrgReaderProcessor } from './processors/LdapOrgReaderProcessor';
 import { LocationRefProcessor } from './processors/LocationEntityProcessor';
 import { PlaceholderProcessor } from './processors/PlaceholderProcessor';
-import { CodeOwnersProcessor } from './processors/CodeOwnersProcessor';
 import * as result from './processors/results';
 import { StaticLocationProcessor } from './processors/StaticLocationProcessor';
 import {
@@ -89,6 +90,7 @@ export class LocationReaders implements LocationReader {
       new BitbucketApiReaderProcessor(config),
       new AzureApiReaderProcessor(config),
       GithubOrgReaderProcessor.fromConfig(config),
+      LdapOrgReaderProcessor.fromConfig(config),
       new UrlReaderProcessor(),
       new YamlProcessor(),
       PlaceholderProcessor.default(),
