@@ -25,6 +25,7 @@ import { AzureUrlReader } from './AzureUrlReader';
 import { BitbucketUrlReader } from './BitbucketUrlReader';
 import { GithubUrlReader } from './GithubUrlReader';
 import { GitlabUrlReader } from './GitlabUrlReader';
+import { FetchUrlReader } from './FetchUrlReader';
 
 export type ReaderFactoryOptions = {
   config: Config;
@@ -61,12 +62,14 @@ export class UrlReaders {
         GitlabUrlReader.factory,
       ],
       logger,
+      new FetchUrlReader(),
     );
   }
 
   private constructor(
     private readonly factories: ReaderFactory[],
     private readonly logger: Logger,
+    private fallback?: UrlReader,
   ) {}
 
   /**
@@ -74,7 +77,7 @@ export class UrlReaders {
    * reader type needs to have a registered factory, or an error will be thrown.
    */
   createWithConfig(config: Config): UrlReader {
-    const mux = new UrlReaderPredicateMux();
+    const mux = new UrlReaderPredicateMux({ fallback: this.fallback });
     const readers = [];
 
     for (const factory of this.factories) {
@@ -98,5 +101,9 @@ export class UrlReaders {
    */
   addFactory(factory: ReaderFactory) {
     this.factories.push(factory);
+  }
+
+  setFallback(reader?: UrlReader) {
+    this.fallback = reader;
   }
 }
